@@ -204,4 +204,13 @@ class SquaresGrowLineView(ctx : Context) : View(ctx) {
             }
         }
     }
+
+    companion object {
+
+        fun create(activity : Activity) : SquaresGrowLineView {
+            val view : SquaresGrowLineView = SquaresGrowLineView(activity)
+            activity.setContentView(view)
+            return view
+        }
+    }
 }
