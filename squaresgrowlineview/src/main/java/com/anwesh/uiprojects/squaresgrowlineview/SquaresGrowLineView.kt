@@ -23,3 +23,32 @@ val backColor : Int = Color.parseColor("#BDBDBD")
 fun Int.inverse() : Float = 1f / this
 fun Float.maxScale(i : Int, n : Int) : Float = Math.max(0f, this - i * n.inverse())
 fun Float.divideScale(i : Int, n : Int) : Float = Math.min(n.inverse(), maxScale(i, n)) * n
+
+fun Canvas.drawSquare(i : Int, gap : Float, sc : Float, paint : Paint) {
+    save()
+    translate(gap * 2 * i + 1.5f * gap, 0f)
+    drawRect(RectF(-gap / 2, 0f, gap / 2, gap * sc.divideScale(i + 1, parts)), paint)
+    restore()
+}
+
+fun Canvas.drawLineGrowSquare(w : Float, sc : Float, paint : Paint) {
+    val gap : Float = w / 2 * (parts - 2) + 1
+    drawLine(0f, 0f, w * sc, 0f, paint)
+    for (j in 0..(parts - 3)) {
+        drawSquare(j, gap, sc, paint)
+    }
+}
+
+fun Canvas.drawSGLNode(i : Int, scale : Float, paint : Paint) {
+    val w : Float = width.toFloat()
+    val h : Float = height.toFloat()
+    val hGap : Float = h / (colors.size + 1)
+    paint.color = Color.parseColor(colors[i])
+    paint.strokeCap = Paint.Cap.ROUND
+    paint.strokeWidth = Math.min(w, h) / strokeFactor
+    save()
+    translate(0f, hGap * (i + 1))
+    drawLineGrowSquare(w, scale, paint)
+    restore()
+}
+
