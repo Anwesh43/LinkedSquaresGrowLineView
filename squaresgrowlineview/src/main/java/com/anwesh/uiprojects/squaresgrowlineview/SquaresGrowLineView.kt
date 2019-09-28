@@ -181,4 +181,26 @@ class SquaresGrowLineView(ctx : Context) : View(ctx) {
             curr.startUpdating(cb)
         }
     }
+
+    data class Renderer(var view : SquaresGrowLineView) {
+
+        val sgl : SquaresGrowLineContainer = SquaresGrowLineContainer(0)
+        val animator : Animator = Animator(view)
+
+        fun render(canvas : Canvas, paint : Paint) {
+            canvas.drawColor(backColor)
+            sgl.draw(canvas, paint)
+            animator.animate {
+                sgl.update {
+                    animator.stop()
+                }
+            }
+        }
+
+        fun handleTap() {
+            sgl.startUpdating {
+                animator.start()
+            }
+        }
+    }
 }
